@@ -30,6 +30,10 @@ public class ProductServiceImpl implements ProductService {
 			queue = RabbitQueue.HIGH_PRIORITY_DATA_CHANGE_QUEUE;
 		}
 		
+		if(product.getId() == null){
+			product.setId(100l);
+		}
+		
 		rabbitMQSender.send(queue, "{\"event_type\": \"add\", \"data_type\": \"product\", \"id\": " + product.getId() + "}");
 	}
 
@@ -44,6 +48,10 @@ public class ProductServiceImpl implements ProductService {
 			queue = RabbitQueue.REFRESH_DATA_CHANGE_QUEUE;
 		} else if("high".equals(operationType)) {
 			queue = RabbitQueue.HIGH_PRIORITY_DATA_CHANGE_QUEUE;
+		}
+		
+		if(product.getId() == null){
+			product.setId(100l);
 		}
 		
 		rabbitMQSender.send(queue, "{\"event_type\": \"update\", \"data_type\": \"product\", \"id\": " + product.getId() + "}");
